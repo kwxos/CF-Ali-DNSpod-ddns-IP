@@ -122,9 +122,10 @@ while [[ ${x} -lt $num ]]; do
 
 
     if [[ $recordIp = "$ipAddr" ]]; then
-        echo -e "----->更新失败<------\n--------------------\n获取IP与云端相同\n域名：$CDNhostname\n原IP：$recordIp" > informlog;
-        resSuccess=false;
-    elif [[ $recordId = "null" ]]; then
+    echo -e "----->更新失败<------\n--------------------\n获取IP与云端相同\n域名：$CDNhostname\n原IP：$recordIp" > informlog;
+    resSuccess=false;
+    else
+    if [[ $recordId = "null" ]]; then
         res=$(curl -s -X POST "$createDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json" --data "{\"type\":\"$recordType\",\"name\":\"$CDNhostname\",\"content\":\"$ipAddr\",\"proxied\":$proxy}");
         resSuccess=$(echo "$res" | jq -r ".success");
     else
@@ -132,6 +133,7 @@ while [[ ${x} -lt $num ]]; do
         res=$(curl -s -X PUT "$updateDnsApi"  -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json" --data "{\"type\":\"$recordType\",\"name\":\"$CDNhostname\",\"content\":\"$ipAddr\",\"proxied\":$proxy}");
         resSuccess=$(echo "$res" | jq -r ".success");
     fi
+
     # 调用CFAPI检查是否更新成功
     listDnsApi1="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?type=${recordType}&name=${CDNhostname}";
     createDnsApi1="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records";
@@ -145,7 +147,7 @@ while [[ ${x} -lt $num ]]; do
     else
         echo -e "----->更新失败<------\n域名：$CDNhostname" > informlog;
     fi
-
+    fi
     x=$((x + 1));
     sleep 3s;
  #会生成一个名为informlog的临时文件作为推送的内容。
