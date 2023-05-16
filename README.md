@@ -15,3 +15,4 @@
 	#所有脚本运行前请授予权限`chmod a+x ip.sh plug.sh tg-push cf-ddns IPali.sh`
 	
 项目借鉴于[lee1080](https://github.com/lee1080)，在此基础上，大量更改
+感谢XIU2给大家提供的工具。 https://github.com/XIU2/CloudflareSpeedTest
