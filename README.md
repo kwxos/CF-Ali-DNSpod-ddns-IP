@@ -6,4 +6,3 @@
 
 增加与云端ip对比测速，看是否更新优选ip
 
-原作者：https://github.com/lee1080/CloudflareSpeedTestDDNS
