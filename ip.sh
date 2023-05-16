@@ -79,4 +79,4 @@ telegramBotUserId=6xxxxxxxxxxx
 ##TGlink设置，默认：api.telegram.org
 telegramlink=
 #####################################################################################################
-source cf_ddns
+source cf-ddns
