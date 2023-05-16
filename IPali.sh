@@ -99,5 +99,5 @@ fi
 break
 done
 pushmessage=$(cat informlog);
-source cf_push;
+source tg-push;
 exit 0;
