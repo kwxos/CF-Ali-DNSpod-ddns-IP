@@ -6,7 +6,7 @@
 
 	#新功能，支持更新优选完毕后推送至TG，再也不怕脚本没有成功运行了,优化TG推送流程
 	
-	#使用脚本需要安装jq和timeout，新增openwrt专用cf_RE.sh文件，运行cf_RE.sh即可在openwrt安装jq和timeout两个扩展。
+	#使用脚本需要安装jq和timeout，新增openwrt专用plug.sh文件，运行plug.sh即可在openwrt安装jq和timeout两个扩展。
 	
 	#其他linux请自行安装jq和timeout。
 	
