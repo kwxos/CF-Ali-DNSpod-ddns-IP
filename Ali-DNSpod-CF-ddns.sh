@@ -129,7 +129,7 @@ IP_txt="https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ip.txt"
 IPv6_txt="https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ipv6.txt"
 #优选IPv4ip获取地址如:https://xxxxxxxxxxxxxxxxxx/main/best-ip.txt
 IPbest_txt=""
-#优选IPv4ip网页获取地址如:https://xxxxxxxxxx/ipv4.php
+#优选IPv4ip网页获取地址如:https://xxxxxxxxxx/ipv4.php，如果出错请留空
 IPbest_txt2=""
 EOF
 echo "请修改文件后,重新启动"
