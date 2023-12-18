@@ -136,7 +136,9 @@ else
     echo "config文件已存在"
 fi
 source /root/dns-ip/config
-if [ "$packages" = "ture" ] ; then
+# 如果 $packages 变量值为 "true"，则执行安装逻辑
+if [ "$packages" = "true" ] ; then
+    # 定义安装软件包的函数
     install_package() {
         package_name=$1
         install_command=$2
@@ -154,6 +156,8 @@ if [ "$packages" = "ture" ] ; then
             echo "$package_name 已经安装。跳过。"
         fi
     }
+
+    # 检测包管理器并更新软件包信息
     if command -v apt-get &> /dev/null; then
         # Ubuntu 或 Debian
         PACKAGE_MANAGER="apt-get"
@@ -162,6 +166,8 @@ if [ "$packages" = "ture" ] ; then
         install_package "curl" "$PACKAGE_MANAGER install -y"
         install_package "wget" "$PACKAGE_MANAGER install -y"
         install_package "openssl" "$PACKAGE_MANAGER install -y"
+        install_package "coreutils" "$PACKAGE_MANAGER install -y"
+        install_package "timeout" "$PACKAGE_MANAGER install -y"
     elif command -v yum &> /dev/null; then
         # CentOS
         PACKAGE_MANAGER="yum"
@@ -170,6 +176,8 @@ if [ "$packages" = "ture" ] ; then
         install_package "curl" "$PACKAGE_MANAGER install -y"
         install_package "wget" "$PACKAGE_MANAGER install -y"
         install_package "openssl" "$PACKAGE_MANAGER install -y"
+        install_package "coreutils" "$PACKAGE_MANAGER install -y"
+        install_package "timeout" "$PACKAGE_MANAGER install -y"
     elif command -v apk &> /dev/null; then
         # Alpine
         PACKAGE_MANAGER="apk"
@@ -178,6 +186,8 @@ if [ "$packages" = "ture" ] ; then
         install_package "curl" "$PACKAGE_MANAGER add"
         install_package "wget" "$PACKAGE_MANAGER add"
         install_package "openssl-dev" "$PACKAGE_MANAGER add"  # 注意可能是 "openssl-dev"
+        install_package "coreutils" "$PACKAGE_MANAGER add"
+        install_package "timeout" "$PACKAGE_MANAGER add"
     elif command -v opkg &> /dev/null; then
         # OpenWrt
         PACKAGE_MANAGER="opkg"
@@ -186,6 +196,7 @@ if [ "$packages" = "ture" ] ; then
         install_package "curl" "$PACKAGE_MANAGER install"
         install_package "wget" "$PACKAGE_MANAGER install"
         install_package "openssl-util" "$PACKAGE_MANAGER install"
+        install_package "coreutils-timeout" "$PACKAGE_MANAGER install"
     else
         echo "不支持的系统。退出。"
         exit 1
