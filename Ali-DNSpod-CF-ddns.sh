@@ -10,7 +10,7 @@ if [ ! -e "$config_file" ]; then
 #ipv6.txt在CloudflareST工具包里，下载地址：https://github.com/XIU2/CloudflareSpeedTest/releases
 IP_ADDR=ipv4
 ###################################################################################################
-#选择CF更新是否开启，ture为开启CF更新，为false将不会推送
+#选择CF更新是否开启，ture为开启CF更新，为false将不会更新
 cf=ture
 ##cloudflare配置
 #cloudflare账号邮箱
@@ -111,9 +111,13 @@ telegramlink=xxx.xxxxxxxx.xxxxxxx
 #本地IP检测，如有公网IP，需动态解析请打开此开关，与优选IP不能同时使用
 #使用此请关闭ipget和CloudflareST_speed，开启为ture，关闭为false
 localIP=false
-#####################################################################################################
 #如果不开ipget，就指定需要更新到DNS平台的ip，如ipAddr=1.1.1.1
 ipAddr=""
+#休眠时间，1200也就是20分钟检测一次IP地址是否可用
+sltime=1200
+#是否自动安装系统软件包，ture为安装false为不安装，运行需要jq curl openssl wget，尽量不自动安装，手动安装这些
+#因为各个系统环境复杂！！！！！
+packages=fasle
 #####################################################################################################
 #关于是否下载CloudflareST测速工具，ip文件地址，默认必开
 ipget=ture
@@ -131,7 +135,64 @@ exit 0;
 else
     echo "config文件已存在"
 fi
-source /root/dns-ip/
+source /root/dns-ip/config
+if [ "$packages" = "ture" ] ; then
+    install_package() {
+        package_name=$1
+        install_command=$2
+
+        if ! command -v $package_name &> /dev/null; then
+            echo "正在安装 $package_name..."
+            $install_command $package_name
+            if [ $? -eq 0 ]; then
+                echo "$package_name 安装成功。"
+            else
+                echo "无法安装 $package_name。退出。"
+                exit 1
+            fi
+        else
+            echo "$package_name 已经安装。跳过。"
+        fi
+    }
+    if command -v apt-get &> /dev/null; then
+        # Ubuntu 或 Debian
+        PACKAGE_MANAGER="apt-get"
+        $PACKAGE_MANAGER update  # 更新软件包信息
+        install_package "jq" "$PACKAGE_MANAGER install -y"
+        install_package "curl" "$PACKAGE_MANAGER install -y"
+        install_package "wget" "$PACKAGE_MANAGER install -y"
+        install_package "openssl" "$PACKAGE_MANAGER install -y"
+    elif command -v yum &> /dev/null; then
+        # CentOS
+        PACKAGE_MANAGER="yum"
+        $PACKAGE_MANAGER makecache  # 更新软件包信息
+        install_package "jq" "$PACKAGE_MANAGER install -y"
+        install_package "curl" "$PACKAGE_MANAGER install -y"
+        install_package "wget" "$PACKAGE_MANAGER install -y"
+        install_package "openssl" "$PACKAGE_MANAGER install -y"
+    elif command -v apk &> /dev/null; then
+        # Alpine
+        PACKAGE_MANAGER="apk"
+        $PACKAGE_MANAGER update  # 更新软件包信息
+        install_package "jq" "$PACKAGE_MANAGER add"
+        install_package "curl" "$PACKAGE_MANAGER add"
+        install_package "wget" "$PACKAGE_MANAGER add"
+        install_package "openssl-dev" "$PACKAGE_MANAGER add"  # 注意可能是 "openssl-dev"
+    elif command -v opkg &> /dev/null; then
+        # OpenWrt
+        PACKAGE_MANAGER="opkg"
+        $PACKAGE_MANAGER update  # 更新软件包信息
+        install_package "jq" "$PACKAGE_MANAGER install"
+        install_package "curl" "$PACKAGE_MANAGER install"
+        install_package "wget" "$PACKAGE_MANAGER install"
+        install_package "openssl-util" "$PACKAGE_MANAGER install"
+    else
+        echo "不支持的系统。退出。"
+        exit 1
+    fi
+
+    echo "所有必需的软件包都已安装。"
+fi
 if [ "$localIP" = "ture" ]; then
 ipAddr=`curl -s http://ip.3322.net`
 fi
