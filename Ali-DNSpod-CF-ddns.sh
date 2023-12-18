@@ -138,6 +138,8 @@ fi
 source /root/dns-ip/config
 # 如果 $packages 变量值为 "true"，则执行安装逻辑
 if [ "$packages" = "true" ] ; then
+    echo "即将进行环境安装检测...."
+    sleep 3
     # 定义安装软件包的函数
     install_package() {
         package_name=$1
