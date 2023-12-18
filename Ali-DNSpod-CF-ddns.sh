@@ -10,6 +10,7 @@ if [ ! -e "$config_file" ]; then
 #ipv6.txt在CloudflareST工具包里，下载地址：https://github.com/XIU2/CloudflareSpeedTest/releases
 IP_ADDR=ipv4
 ###################################################################################################
+##Cloudflare配置
 #选择CF更新是否开启，true为开启CF更新，为false将不会更新
 cf=false
 ##cloudflare配置
@@ -96,6 +97,7 @@ CFST_CSV2=DCF.csv
 #测速端口
 CF_POST=443
 #####################################################################################################
+##TG推送配置
 #选择TG消息推送是否开启true为开启推送，为false将不会推送
 tg=false
 ##TG推送设置
@@ -108,6 +110,7 @@ telegramBotUserId=xxxxxxxxxxx
 ##TGlink设置，默认：api.telegram.org
 telegramlink=xxx.xxxxxxxx.xxxxxxx
 #####################################################################################################
+##杂项配置
 #本地IP检测，如有公网IP，需动态解析请打开此开关，与优选IP不能同时使用
 #使用此请关闭ipget和CloudflareST_speed，开启为true，关闭为false
 localIP=false
@@ -119,6 +122,7 @@ sltime=1200
 #因为各个系统环境复杂！！！！！
 packages=fasle
 #####################################################################################################
+##IP地址文件配置
 #关于是否下载CloudflareST测速工具，ip文件地址，默认必开
 ipget=false
 #基本IPv4ip获取地址
