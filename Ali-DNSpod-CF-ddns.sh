@@ -17,9 +17,7 @@ cf=false
 #cloudflare账号邮箱
 x_email=xxxxx@qq.com
 #填写需要DDNS的完整域名
-#支持多域名:域名需要填写在括号中，每个域名之间用“空格”相隔。
-#例如：（cdn.test.com） 或者 （cdn1.test.com cdn2.test.com cdn3.test.com）
-hostname=(xxx.xxxx.xxx)
+hostname=xxx.xxxx.xxx
 #空间ID
 zone_id=xxxxxxxxx7d14e5152f9xxxxxxxxx
 #Global API Key
@@ -285,7 +283,7 @@ if [ "$CloudflareST_speed" = "false" ] ; then
 	echo "按要求未进行CFIP测速";
 else
 if [ "$cf" = "true" ] ; then
-    CFIPget=${hostname[$x]};
+    CFIPget=$hostname;
     listDnsipget="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?type=${record_type}&name=${CFIPget}";
     res234=$(curl -s -X GET "$listDnsipget" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json");
     CFIP2=$(echo "$res234" | jq -r ".result[0].content");
@@ -370,7 +368,7 @@ if [ "$cf" = "false" ] ; then
 	echo "按要求未进行CF-IP推送";
 else
 echo "开始更新CF域名......";
-CDNhostname=${hostname[$x]};
+CDNhostname=$hostname;
 listDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?type=${record_type}&name=${CDNhostname}";
 createDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records";
 res=$(curl -s -X GET "$listDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json");
