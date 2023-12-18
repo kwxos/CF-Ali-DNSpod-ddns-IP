@@ -11,7 +11,7 @@ if [ ! -e "$config_file" ]; then
 IP_ADDR=ipv4
 ###################################################################################################
 #选择CF更新是否开启，true为开启CF更新，为false将不会更新
-cf=true
+cf=false
 ##cloudflare配置
 #cloudflare账号邮箱
 x_email=xxxxx@qq.com
@@ -74,7 +74,7 @@ clien=3
 ###################################################################################################
 ##CloudflareST配置
 #选择测速是否开启true为开启，为false将不会测速
-CloudflareST_speed=true
+CloudflareST_speed=false
 #测速地址  
 CFST_URL=https://xxxxx.xxxxxxxxx.xxxxx
 #测速线程数量；越多测速越快，性能弱的设备 (如路由器) 请勿太高；(默认 200 最多 1000 )
@@ -120,7 +120,7 @@ sltime=1200
 packages=fasle
 #####################################################################################################
 #关于是否下载CloudflareST测速工具，ip文件地址，默认必开
-ipget=true
+ipget=false
 #基本IPv4ip获取地址
 IP_txt="https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ip.txt"
 #基本IPv6地址
