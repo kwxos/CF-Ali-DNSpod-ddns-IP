@@ -1,8 +1,8 @@
 # CF-DNSpod-Aliy-ddns
-#版本：V4.0
-#需要软件包：jq curl openssl wget coreutils-timeout
->运行日志文件和配置文件在/root/dns-ip/文件夹下的ddns_log.txt和config
-功能有：
+##版本：V4.0
+##需要软件包：jq curl openssl wget coreutils-timeout
+##运行日志文件和配置文件在/root/dns-ip/文件夹下的ddns_log.txt和config
+##功能有：
 1. 可以优选Cf的ip更新到CF  阿里云DNS  DNSpod，可选择平台更新
 2. 增加ip源选择，可选择ip为反代IP，仓库推荐
    `https://github.com/ymyuuu/Proxy-IP-library`
