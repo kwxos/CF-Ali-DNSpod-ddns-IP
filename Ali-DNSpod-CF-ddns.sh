@@ -10,8 +10,8 @@ if [ ! -e "$config_file" ]; then
 #ipv6.txt在CloudflareST工具包里，下载地址：https://github.com/XIU2/CloudflareSpeedTest/releases
 IP_ADDR=ipv4
 ###################################################################################################
-#选择CF更新是否开启，ture为开启CF更新，为false将不会更新
-cf=ture
+#选择CF更新是否开启，true为开启CF更新，为false将不会更新
+cf=true
 ##cloudflare配置
 #cloudflare账号邮箱
 x_email=xxxxx@qq.com
@@ -25,7 +25,7 @@ zone_id=xxxxxxxxx7d14e5152f9xxxxxxxxx
 api_key=xxxxxxxb4cxxxxxxxxxx
 ###################################################################################################
 ##阿里云配置
-#选择阿里云是否开启，ture为开启阿里云更新，为false将不会更新
+#选择阿里云是否开启，true为开启阿里云更新，为false将不会更新
 ali=false
 #需要更新的域名ddns.example.com
 #设置需要DDNS的域名：example.com
@@ -46,7 +46,7 @@ AliDDNS_AK="xxxxxxxxxxxxxxx"
 AliDDNS_SK="xxxxxxxxxxxxxxxxxxxxx"
 ###################################################################################################
 ##DNSpod配置
-#选择DNSpod是否开启，ture为开启DNSpod更新，为false将不会更新
+#选择DNSpod是否开启，true为开启DNSpod更新，为false将不会更新
 DNSpod=false
 #需要更新的域名ddns.example.com
 #设置需要DDNS的域名：example.com
@@ -73,8 +73,8 @@ pause=false
 clien=3
 ###################################################################################################
 ##CloudflareST配置
-#选择测速是否开启ture为开启，为false将不会测速
-CloudflareST_speed=ture
+#选择测速是否开启true为开启，为false将不会测速
+CloudflareST_speed=true
 #测速地址  
 CFST_URL=https://xxxxx.xxxxxxxxx.xxxxx
 #测速线程数量；越多测速越快，性能弱的设备 (如路由器) 请勿太高；(默认 200 最多 1000 )
@@ -96,7 +96,7 @@ CFST_CSV2=DCF.csv
 #测速端口
 CF_POST=443
 #####################################################################################################
-#选择TG消息推送是否开启ture为开启推送，为false将不会推送
+#选择TG消息推送是否开启true为开启推送，为false将不会推送
 tg=false
 ##TG推送设置
 #（填写即为开启推送，未填写则为不开启）
@@ -109,18 +109,18 @@ telegramBotUserId=xxxxxxxxxxx
 telegramlink=xxx.xxxxxxxx.xxxxxxx
 #####################################################################################################
 #本地IP检测，如有公网IP，需动态解析请打开此开关，与优选IP不能同时使用
-#使用此请关闭ipget和CloudflareST_speed，开启为ture，关闭为false
+#使用此请关闭ipget和CloudflareST_speed，开启为true，关闭为false
 localIP=false
 #如果不开ipget，就指定需要更新到DNS平台的ip，如ipAddr=1.1.1.1
 ipAddr=""
 #休眠时间，1200也就是20分钟检测一次IP地址是否可用
 sltime=1200
-#是否自动安装系统软件包，ture为安装false为不安装，运行需要jq curl openssl wget，尽量不自动安装，手动安装这些
+#是否自动安装系统软件包，true为安装false为不安装，运行需要jq curl openssl wget，尽量不自动安装，手动安装这些
 #因为各个系统环境复杂！！！！！
 packages=fasle
 #####################################################################################################
 #关于是否下载CloudflareST测速工具，ip文件地址，默认必开
-ipget=ture
+ipget=true
 #基本IPv4ip获取地址
 IP_txt="https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ip.txt"
 #基本IPv6地址
@@ -204,7 +204,7 @@ if [ "$packages" = "true" ] ; then
 
     echo "所有必需的软件包都已安装。"
 fi
-if [ "$localIP" = "ture" ]; then
+if [ "$localIP" = "true" ]; then
 ipAddr=`curl -s http://ip.3322.net`
 fi
 if [ "$IP_ADDR" = "ipv4" ] ; then
@@ -278,7 +278,7 @@ cf_ip_speed(){
 if [ "$CloudflareST_speed" = "false" ] ; then
 	echo "按要求未进行CFIP测速";
 else
-if [ "$cf" = "ture" ] ; then
+if [ "$cf" = "true" ] ; then
     CFIPget=${hostname[$x]};
     listDnsipget="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?type=${record_type}&name=${CFIPget}";
     res234=$(curl -s -X GET "$listDnsipget" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json");
@@ -287,7 +287,7 @@ if [ "$cf" = "ture" ] ; then
     echo -e "$CFIP2\n" >> IPlus.txt
     echo "CFDNSIP获取成功：$CFIP2"
 fi
-if [ "$ali" = "ture" ] ; then
+if [ "$ali" = "true" ] ; then
 urlencode() {
     local string="$1"
     echo -n "$string" | jq -s -R -r @uri
@@ -297,13 +297,13 @@ send_request() {
     local params="$2"
     local args="AccessKeyId=$AliDDNS_AK&Action=$action&Format=json&$params&Version=2015-01-09"
     local hash=$(echo -n "GET&%2F&$(urlencode "$args")" | openssl dgst -sha1 -hmac "$AliDDNS_SK&" -binary | openssl base64)
-    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signature=$(urlencode "$hash")"
+    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signatrue=$(urlencode "$hash")"
 }
 get_ip() {
     grep '"Value"' | jq -r '.DomainRecords.Record[].Value'
 }
 query_recordid() {
-    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&SubDomain=$AliDDNS_SubDomainName.$AliDDNS_DomainName&Timestamp=$timestamp&Type=$record_type"
+    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&SubDomain=$AliDDNS_SubDomainName.$AliDDNS_DomainName&Timestamp=$timestamp&Type=$record_type"
 }
     timestamp=`date -u "+%Y-%m-%dT%H%%3A%M%%3A%SZ"`
     AliIP2=`query_recordid A | get_ip`
@@ -311,7 +311,7 @@ query_recordid() {
     echo -e "$AliIP2\n" >> IPlus.txt
     echo "AliDNSIP获取成功：$AliIP2"
 fi
-if [ "$DNSpod" = "ture" ] ; then
+if [ "$DNSpod" = "true" ] ; then
 domainipget=$(curl -s https://dnsapi.cn/Domain.List -d "login_token=$ID,$TOKEN" | jq -r '.domains[] | select(.punycode == "'$domain'")'  | jq .id)
 recordipget=$(curl -s https://dnsapi.cn/Record.List -d "login_token=$ID,$TOKEN&domain_id=$domainipget"  | jq -r '.records[] | select(.name == "'$sub_domain'")' | jq -r '. | select(.type == "A")' | jq .id)
 recordidget=$(echo $recordipget | sed 's/\"//g')
@@ -425,7 +425,7 @@ send_request() {
     local params="$2"
     local args="AccessKeyId=$AliDDNS_AK&Action=$action&Format=json&$params&Version=2015-01-09"
     local hash=$(echo -n "GET&%2F&$(urlencode "$args")" | openssl dgst -sha1 -hmac "$AliDDNS_SK&" -binary | openssl base64)
-    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signature=$(urlencode "$hash")"
+    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signatrue=$(urlencode "$hash")"
 }
 get_recordid() {
     grep -Eo '"RecordId":"[0-9]+"' | cut -d':' -f2 | tr -d '"'
@@ -434,13 +434,13 @@ get_ip() {
     grep '"Value"' | jq -r '.DomainRecords.Record[].Value'
 }
 query_recordid() {
-    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&SubDomain=$ALiDom&Timestamp=$timestamp&Type=$record_type"
+    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&SubDomain=$ALiDom&Timestamp=$timestamp&Type=$record_type"
 }
 update_record() {
-    send_request "UpdateDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&RecordId=$3&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
+    send_request "UpdateDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&RecordId=$3&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
 }
 add_record() {
-    send_request "AddDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
+    send_request "AddDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
 }
 if [ "$record_type" = "A" ]
 then
