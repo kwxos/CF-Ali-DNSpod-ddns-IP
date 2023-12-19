@@ -4,7 +4,7 @@ config_file="/root/dns-ip/config"
 if [ ! -e "$config_file" ]; then
   cat > /root/dns-ip/config << EOF
 #!/bin/bash
-###################################################################################################
+##################################静雨·安蝉>>blog.kwxos.top#########################################
 ##运行模式ipv4 or ipv6 默认为：ipv4
 #指定工作模式为ipv4还是ipv6。如果为ipv6，请在文件夹下添加ipv6.txt
 #ipv6.txt在CloudflareST工具包里，下载地址：https://github.com/XIU2/CloudflareSpeedTest/releases
