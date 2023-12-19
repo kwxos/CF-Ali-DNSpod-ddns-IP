@@ -301,13 +301,13 @@ send_request() {
     local params="$2"
     local args="AccessKeyId=$AliDDNS_AK&Action=$action&Format=json&$params&Version=2015-01-09"
     local hash=$(echo -n "GET&%2F&$(urlencode "$args")" | openssl dgst -sha1 -hmac "$AliDDNS_SK&" -binary | openssl base64)
-    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signatrue=$(urlencode "$hash")"
+    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signature=$(urlencode "$hash")"
 }
 get_ip() {
     grep '"Value"' | jq -r '.DomainRecords.Record[].Value'
 }
 query_recordid() {
-    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&SubDomain=$AliDDNS_SubDomainName.$AliDDNS_DomainName&Timestamp=$timestamp&Type=$record_type"
+    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&SubDomain=$AliDDNS_SubDomainName.$AliDDNS_DomainName&Timestamp=$timestamp&Type=$record_type"
 }
     timestamp=`date -u "+%Y-%m-%dT%H%%3A%M%%3A%SZ"`
     AliIP2=`query_recordid A | get_ip`
@@ -324,7 +324,7 @@ echo >> IPlus.txt
 echo -e "$DNSpodIP2\n" >> IPlus.txt
 echo "DNSpodDNSIP获取成功：$DNSpodIP2"
 fi
-num=$hostname;
+num=${#hostname[*]};
 if [ "$CFST_DN" -le $num ] ; then
 	CFST_DN=$num;
 fi
@@ -415,11 +415,11 @@ if [ "$ali" = "false" ] ; then
 else
     echo "开始更新ali域名......"
     sleep 3
-eqold6=0
-eqold4=0
-ALiDom="$AliDDNS_SubDomainName.$AliDDNS_DomainName"
-AliDDNS_LocalIP4=$ipAddr
-AliDDNS_LocalIP6=$ipAddr
+    eqold6=0
+    eqold4=0
+    ALiDom="$AliDDNS_SubDomainName.$AliDDNS_DomainName"
+    AliDDNS_LocalIP4=$ipAddr
+    AliDDNS_LocalIP6=$ipAddr
 urlencode() {
     local string="$1"
     echo -n "$string" | jq -s -R -r @uri
@@ -429,7 +429,7 @@ send_request() {
     local params="$2"
     local args="AccessKeyId=$AliDDNS_AK&Action=$action&Format=json&$params&Version=2015-01-09"
     local hash=$(echo -n "GET&%2F&$(urlencode "$args")" | openssl dgst -sha1 -hmac "$AliDDNS_SK&" -binary | openssl base64)
-    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signatrue=$(urlencode "$hash")"
+    curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signature=$(urlencode "$hash")"
 }
 get_recordid() {
     grep -Eo '"RecordId":"[0-9]+"' | cut -d':' -f2 | tr -d '"'
@@ -438,13 +438,13 @@ get_ip() {
     grep '"Value"' | jq -r '.DomainRecords.Record[].Value'
 }
 query_recordid() {
-    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&SubDomain=$ALiDom&Timestamp=$timestamp&Type=$record_type"
+    send_request "DescribeSubDomainRecords&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&SubDomain=$ALiDom&Timestamp=$timestamp&Type=$record_type"
 }
 update_record() {
-    send_request "UpdateDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&RecordId=$3&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
+    send_request "UpdateDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&RecordId=$3&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
 }
 add_record() {
-    send_request "AddDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatrueMethod=HMAC-SHA1&SignatrueNonce=$timestamp&SignatrueVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
+    send_request "AddDomainRecord&DomainName=$AliDDNS_DomainName" "RR=$AliDDNS_SubDomainName&SignatureMethod=HMAC-SHA1&SignatureNonce=$timestamp&SignatureVersion=1.0&TTL=$AliDDNS_TTL&Timestamp=$timestamp&Type=$record_type&Value=$(urlencode "$2")"
 }
 if [ "$record_type" = "A" ]
 then
@@ -483,6 +483,7 @@ timestamp=`date -u "+%Y-%m-%dT%H%%3A%M%%3A%SZ"`
    else
        newA=`update_record A $AliDDNS_LocalIP4 $AliDDNS_RecordID4`
    fi
+   
     timestamp=`date -u "+%Y-%m-%dT%H%%3A%M%%3A%SZ"`
     Ali_newip=`query_recordid A | get_ip`
    if [ "$Ali_newip" != "$AliDDNS_LocalIP4" ]; then
@@ -499,6 +500,7 @@ timestamp=`date -u "+%Y-%m-%dT%H%%3A%M%%3A%SZ"`
    then
        AliDDNS_RecordID6=`query_recordid AAAA | get_recordid`
    fi
+   
    if [ "$AliDDNS_RecordID6" = "" ]
    then
        AliDDNS_RecordID6=`add_record AAAA $AliDDNS_LocalIP6 | get_recordid`
