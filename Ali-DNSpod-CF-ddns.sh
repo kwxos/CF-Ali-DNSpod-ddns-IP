@@ -324,7 +324,7 @@ echo >> IPlus.txt
 echo -e "$DNSpodIP2\n" >> IPlus.txt
 echo "DNSpodDNSIP获取成功：$DNSpodIP2"
 fi
-num=${#hostname[*]};
+num=$hostname;
 if [ "$CFST_DN" -le $num ] ; then
 	CFST_DN=$num;
 fi
