@@ -16,7 +16,7 @@
 ## >手动运行方式：
 ```
 mkdir /root/dns-ip/ && cd /root/dns-ip/
-wget https://raw.githubusercontents.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh
+wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh
 chmod a+x Ali-DNSpod-CF-ddns.sh
 ./Ali-DNSpod-CF-ddns.sh
 ```
