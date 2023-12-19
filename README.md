@@ -28,6 +28,7 @@ ps aux | grep Ali-DNSpod-CF-ddns.sh
 kill -9 编号
 ```
 如下图：
+
 ![image](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/3435a585-5a8d-44a7-b32c-9a58b4287880)
 ![image](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/fd82480e-68d3-4b6e-80ca-26dfd654241d)
 
