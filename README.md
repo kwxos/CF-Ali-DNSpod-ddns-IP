@@ -54,7 +54,11 @@ docker stop dns-ip
 ```
 docker start dns-ip
 ```
-样本
+配置样本
+
+![image](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/ce505721-adac-48ff-b538-bbb4754d5aad)
+
+运行样本
 
 ![bf50d0ab4006ce6fd974d741d58f4e6b](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/38eb83aa-f9f0-4939-a0bb-1c501a4dfa54)
 
