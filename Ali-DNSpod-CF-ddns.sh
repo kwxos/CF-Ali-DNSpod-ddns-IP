@@ -138,7 +138,6 @@ else
     echo "config文件已存在"
 fi
 source /root/dns-ip/config
-# 如果 $packages 变量值为 "true"，则执行安装逻辑
 if [ "$packages" = "true" ] ; then
     echo "即将进行环境安装检测...."
     sleep 3
@@ -160,12 +159,10 @@ if [ "$packages" = "true" ] ; then
             echo "$package_name 已经安装。跳过。"
         fi
     }
-
-    # 检测包管理器并更新软件包信息
     if command -v apt-get &> /dev/null; then
         # Ubuntu 或 Debian
         PACKAGE_MANAGER="apt-get"
-        $PACKAGE_MANAGER update  # 更新软件包信息
+        $PACKAGE_MANAGER update
         install_package "jq" "$PACKAGE_MANAGER install -y"
         install_package "curl" "$PACKAGE_MANAGER install -y"
         install_package "wget" "$PACKAGE_MANAGER install -y"
@@ -175,7 +172,7 @@ if [ "$packages" = "true" ] ; then
     elif command -v yum &> /dev/null; then
         # CentOS
         PACKAGE_MANAGER="yum"
-        $PACKAGE_MANAGER makecache  # 更新软件包信息
+        $PACKAGE_MANAGER makecache
         install_package "jq" "$PACKAGE_MANAGER install -y"
         install_package "curl" "$PACKAGE_MANAGER install -y"
         install_package "wget" "$PACKAGE_MANAGER install -y"
@@ -185,17 +182,17 @@ if [ "$packages" = "true" ] ; then
     elif command -v apk &> /dev/null; then
         # Alpine
         PACKAGE_MANAGER="apk"
-        $PACKAGE_MANAGER update  # 更新软件包信息
+        $PACKAGE_MANAGER update
         install_package "jq" "$PACKAGE_MANAGER add"
         install_package "curl" "$PACKAGE_MANAGER add"
         install_package "wget" "$PACKAGE_MANAGER add"
-        install_package "openssl-dev" "$PACKAGE_MANAGER add"  # 注意可能是 "openssl-dev"
+        install_package "openssl-dev" "$PACKAGE_MANAGER add"
         install_package "coreutils" "$PACKAGE_MANAGER add"
         install_package "timeout" "$PACKAGE_MANAGER add"
     elif command -v opkg &> /dev/null; then
         # OpenWrt
         PACKAGE_MANAGER="opkg"
-        $PACKAGE_MANAGER update  # 更新软件包信息
+        $PACKAGE_MANAGER update
         install_package "jq" "$PACKAGE_MANAGER install"
         install_package "curl" "$PACKAGE_MANAGER install"
         install_package "wget" "$PACKAGE_MANAGER install"
@@ -612,12 +609,10 @@ while true; do
     exit 0;
     else
     IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}');
-    # 使用 ping 命令检测 IP 是否可达，超时时间设置为2秒
     if ping -c 1 -W 2 "$IPnew" &> /dev/null; then
         echo -e "$(date): IP $IPnew 可正常使用...." >> /root/dns-ip/ddns_log.txt
     else
         echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> /root/dns-ip/ddns_log.txt
-        # 在此处执行需要执行的脚本
         {
         run
         closeset
@@ -629,7 +624,6 @@ while true; do
         Tg_push_IP
         } >> /root/dns-ip/ddns_log.txt
     fi
-    # 休眠 20 分钟
     fi
     echo -e "休眠：$sltime秒" >> /root/dns-ip/ddns_log.txt
     sleep $sltime
