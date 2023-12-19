@@ -606,7 +606,7 @@ while true; do
     source /root/dns-ip/config
     DCF_file="/root/dns-ip/DCF.csv"
     if [ ! -e "$DCF_file" ]; then
-    echo -e "未检测到$DCF_file文件，检查配置是否正确，将退出！！！"
+    echo -e "未检测到$DCF_file文件，检查配置是否正确，将退出！！！" /root/dns-ip/ddns_log.txt
     exit 0;
     else
     IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}');
@@ -629,6 +629,6 @@ while true; do
     fi
     # 休眠 20 分钟
     fi
-    echo -e "休眠：$sltime秒"
+    echo -e "休眠：$sltime秒" >> /root/dns-ip/ddns_log.txt
     sleep $sltime
 done
