@@ -54,6 +54,10 @@ docker stop dns-ip
 ```
 docker start dns-ip
 ```
+样本
+
+![bf50d0ab4006ce6fd974d741d58f4e6b](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/38eb83aa-f9f0-4939-a0bb-1c501a4dfa54)
+
 ## 如果项目有帮助到你，请点一个免费的`star`
 感谢[lee1080](https://github.com/lee1080)
 感谢XIU2给大家提供的工具。 https://github.com/XIU2/CloudflareSpeedTest
