@@ -22,10 +22,11 @@ mkdir -p /root/dns-ip/ && cd /root/dns-ip/ && wget https://raw.githubusercontent
 screen ./Ali-DNSpod-CF-ddns.sh 2>&1 &
 ```
 ##### 若要停止程序
+
 ```
-##### 搜寻进程编号
-```
+# 搜寻进程编号
 ps aux | grep Ali-DNSpod-CF-ddns.sh
+# 杀死进程
 kill -9 编号
 ```
 如下图：
