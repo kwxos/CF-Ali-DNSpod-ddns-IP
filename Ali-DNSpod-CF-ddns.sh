@@ -590,12 +590,45 @@ else
 fi
 fi
 }
-run
-closeset
-cf_ip_speed
-openset
-cf_ip_ddns
-ali_ip_ddns
-dnspod_ip_ddns
-Tg_push_IP
-exit 0;
+
+{
+    run
+    closeset
+    cf_ip_speed
+    openset
+    cf_ip_ddns
+    ali_ip_ddns
+    dnspod_ip_ddns
+    Tg_push_IP
+} >> /root/dns-ip/ddns_log.txt
+
+while true; do
+    source /root/dns-ip/config
+    DCF_file="/root/dns-ip/DCF.csv"
+    if [ ! -e "$DCF_file" ]; then
+    echo -e "未检测到$DCF_file文件，检查配置是否正确，将退出！！！"
+    exit 0;
+    else
+    IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}');
+    # 使用 ping 命令检测 IP 是否可达，超时时间设置为2秒
+    if ping -c 1 -W 2 "$IPnew" &> /dev/null; then
+        echo -e "$(date): IP $IPnew 可正常使用...." >> /root/dns-ip/ddns_log.txt
+    else
+        echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> /root/dns-ip/ddns_log.txt
+        # 在此处执行需要执行的脚本
+        {
+        run
+        closeset
+        cf_ip_speed
+        openset
+        cf_ip_ddns
+        ali_ip_ddns
+        dnspod_ip_ddns
+        Tg_push_IP
+        } >> /root/dns-ip/ddns_log.txt
+    fi
+    # 休眠 20 分钟
+    fi
+    echo -e "休眠：$sltime秒"
+    sleep $sltime
+done
