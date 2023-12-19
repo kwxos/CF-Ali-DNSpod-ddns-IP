@@ -13,18 +13,17 @@
 5. 增加轮询，可指定轮询时间，若IP不能用则进行新一轮测速
 6. 增加docker模式
 7. TG推送更新消息,所有配置均可选择开启或关闭
-## >手动运行方式(一条一条复制粘贴)：
+## >手动运行方式：
 ```
-mkdir /root/dns-ip/ && cd /root/dns-ip/
-wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh
-chmod a+x Ali-DNSpod-CF-ddns.sh
-./Ali-DNSpod-CF-ddns.sh
-#在本文件夹下修改config配置，确保配置无误，然后
+mkdir -p /root/dns-ip/ && cd /root/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
+```
+##### 在本文件夹下修改config配置，确保配置无误，然后
+```
 screen ./Ali-DNSpod-CF-ddns.sh 2>&1 &
 ```
-#####若要停止程序
+##### 若要停止程序
 ```
-#搜寻进程编号
+##### 搜寻进程编号
 ps aux | grep Ali-DNSpod-CF-ddns.sh
 kill -9 编号
 ```
@@ -42,10 +41,13 @@ docker run \
     --network=host \
     -v /root/dns-ip:/opt \
     kwxos/cfaliddns:latest
-
+```
 #手动停止
+```
 docker stop dns-ip
+```
 手动开启
+```
 docker start dns-ip
 ```
 ## >如果项目有帮助到你，请点一个免费的`star`
