@@ -44,7 +44,7 @@ docker run \
     --name dns-ip \
     --restart always \
     --network=host \
-    -v /root/dns-ip:/opt \
+    -v $(pwd)/dns-ip:/opt \
     kwxos/cfaliddns:latest
 ```
 ##### 手动停止
