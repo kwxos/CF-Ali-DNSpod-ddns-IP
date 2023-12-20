@@ -1,8 +1,8 @@
 #!/bin/bash
 rm -rf ip.txt ipv6.txt informlog
-config_file="/root/dns-ip/config"
+config_file="$(pwd)/dns-ip/config"
 if [ ! -e "$config_file" ]; then
-  cat > /root/dns-ip/config << EOF
+  cat > $(pwd)/dns-ip/config << EOF
 #!/bin/bash
 ##################################静雨·安蝉>>blog.kwxos.top#########################################
 ##运行模式ipv4 or ipv6 默认为：ipv4
@@ -137,7 +137,7 @@ exit 0;
 else
     echo "config文件已存在"
 fi
-source /root/dns-ip/config
+source $(pwd)/dns-ip/config
 if [ "$packages" = "true" ] ; then
     echo "即将进行环境安装检测...."
     sleep 3
@@ -599,20 +599,20 @@ fi
     ali_ip_ddns
     dnspod_ip_ddns
     Tg_push_IP
-} >> /root/dns-ip/ddns_log.txt
+} >> $(pwd)/dns-ip/ddns_log.txt
 
 while true; do
-    source /root/dns-ip/config
-    DCF_file="/root/dns-ip/DCF.csv"
+    source $(pwd)/dns-ip/config
+    DCF_file="$(pwd)/dns-ip/DCF.csv"
     if [ ! -e "$DCF_file" ]; then
-    echo -e "未检测到$DCF_file文件，检查配置是否正确，将退出！！！" /root/dns-ip/ddns_log.txt
+    echo -e "未检测到$DCF_file文件，检查配置是否正确，将退出！！！" $(pwd)/dns-ip/ddns_log.txt
     exit 0;
     else
     IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}');
     if ping -c 1 -W 2 "$IPnew" &> /dev/null; then
-        echo -e "$(date): IP $IPnew 可正常使用...." >> /root/dns-ip/ddns_log.txt
+        echo -e "$(date): IP $IPnew 可正常使用...." >> $(pwd)/dns-ip/ddns_log.txt
     else
-        echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> /root/dns-ip/ddns_log.txt
+        echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> $(pwd)/dns-ip/ddns_log.txt
         {
         run
         closeset
@@ -622,9 +622,9 @@ while true; do
         ali_ip_ddns
         dnspod_ip_ddns
         Tg_push_IP
-        } >> /root/dns-ip/ddns_log.txt
+        } >> $(pwd)/dns-ip/ddns_log.txt
     fi
     fi
-    echo -e "休眠：$sltime秒" >> /root/dns-ip/ddns_log.txt
+    echo -e "休眠：$sltime秒" >> $(pwd)/dns-ip/ddns_log.txt
     sleep $sltime
 done
