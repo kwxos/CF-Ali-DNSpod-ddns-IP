@@ -13,6 +13,7 @@
 5. 增加轮询，可指定轮询时间，若IP不能用则进行新一轮测速
 6. 增加docker模式
 7. TG推送更新消息,所有配置均可选择开启或关闭
+8. 将上次以解析ip，放入本地重新测速比较
 #### 手动运行方式：
 ```
 mkdir -p /root/dns-ip/ && cd /root/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
