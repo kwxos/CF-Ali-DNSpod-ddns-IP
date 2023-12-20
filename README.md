@@ -16,7 +16,7 @@
 8. 将上次以解析ip，放入本地重新测速比较
 #### 手动运行方式：
 ```
-mkdir -p /root/dns-ip/ && cd /root/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
+mkdir -p $(pwd)/dns-ip/ && cd $(pwd)/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
 ```
 ##### 在本文件夹下修改config配置，确保配置无误，然后
 ```
