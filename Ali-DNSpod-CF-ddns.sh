@@ -594,7 +594,6 @@ if [ -z "$ipAddr520" ]; then
 {
     run
     closeset
-    local_ch
     cf_ip_speed
     local_ch
     openset
