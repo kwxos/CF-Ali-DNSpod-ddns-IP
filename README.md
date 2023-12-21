@@ -3,7 +3,7 @@
 #### 需要软件包：jq curl openssl wget coreutils-timeout(脚本带有安装代码，若出错，请自行安装)
 #### 首次运行后，请填好配置文件，其中有详细解释，若不明白，搜索，或者问我
 #### docker首次运行产生config文件后，请手动停止，配置好文件后手动重启
-#### 运行日志文件和配置文件在/root/dns-ip/文件夹下的ddns_log.txt和config
+#### 运行日志文件和配置文件在dns-ip/文件夹下的ddns_log.txt和config
 #### 执行前在所需平台添加一条A记录，只支持一个，A记录再多作用不大，所以脚本没支持多个IP
 #### 期末了，后几天复习，就不搞这脚本了，二改留名，谢谢
 #### 功能有：
@@ -18,6 +18,7 @@
 8. 将上次以解析ip，放入本地重新测速比较
 9. 运行日志在ddns_log.txt文件中，运行后可以在其中查看运行成功与否和是否报错
 10. 执行过程都在日志文件中，出错了一般是配置错了，我都有说明，除非error，用docker吧
+
 #### 手动运行方式(有docker的建议docker运行)：
 ```
 mkdir -p $(pwd)/dns-ip/ && cd $(pwd)/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
@@ -57,8 +58,11 @@ docker stop dns-ip
 ```
 #### 手动开启
 ```
-docker start dns-ip
+docker restart dns-ip
 ```
+
+![1703149958 9705408](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/966d80fd-b57e-4d06-ae76-ca181558048b)
+
 配置样本
 
 ![image](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/ce505721-adac-48ff-b538-bbb4754d5aad)
