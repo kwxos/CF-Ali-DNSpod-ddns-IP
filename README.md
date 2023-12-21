@@ -66,6 +66,10 @@ docker start dns-ip
 
 ![bf50d0ab4006ce6fd974d741d58f4e6b](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/38eb83aa-f9f0-4939-a0bb-1c501a4dfa54)
 
+正常日志流程
+
+![image](https://github.com/kwxos/CF-Ali-DNSpod-ddns-IP/assets/102129419/55c3643f-39d2-4067-b06f-8b3300b66f99)
+
 #### 如果项目有帮助到你，请点一个免费的`star`，
 #### 有钱捧钱场，没钱点star吧，捐赠大于等于2块，备注名字将记录进博客捐赠名单，
 | wechat | alipay |
