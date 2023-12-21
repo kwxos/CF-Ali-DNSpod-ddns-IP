@@ -17,9 +17,9 @@ cf=false
 x_email=xxxxx@qq.com
 #填写需要DDNS的完整域名
 hostname=xxx.xxxx.xxx
-#空间ID
+#区域 ID,域名右下角获取
 zone_id=xxxxxxxxx7d14e5152f9xxxxxxxxx
-#Global API Key
+#Global API Key,在https://dash.cloudflare.com/profile/api-tokens获取
 api_key=xxxxxxxb4cxxxxxxxxxx
 ###################################################################################################
 ##阿里云配置
