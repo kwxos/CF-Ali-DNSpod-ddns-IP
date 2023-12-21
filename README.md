@@ -14,7 +14,7 @@
 6. 增加docker模式
 7. TG推送更新消息,所有配置均可选择开启或关闭
 8. 将上次以解析ip，放入本地重新测速比较
-#### 手动运行方式：
+#### 手动运行方式(有docker的建议docker运行)：
 ```
 mkdir -p $(pwd)/dns-ip/ && cd $(pwd)/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
 ```
