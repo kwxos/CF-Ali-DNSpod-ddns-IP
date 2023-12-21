@@ -222,7 +222,7 @@ arch=$(uname -m)
 case $arch in
     i386) filename="CloudflareST_x86" ;;
     aarch64) filename="CloudflareST_arm7" ;;
-    arm) filename="CloudflareST_arm64" ;;
+    arm64) filename="CloudflareST_arm64" ;;
     x86_64) filename="CloudflareST_amd64" ;;
     *)
         echo "没有该系统架构运行包"
