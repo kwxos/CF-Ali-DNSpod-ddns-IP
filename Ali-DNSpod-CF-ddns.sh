@@ -6,8 +6,7 @@ if [ ! -e "$config_file" ]; then
 #!/bin/bash
 ##################################静雨·安蝉>>blog.kwxos.top#########################################
 ##运行模式ipv4 or ipv6 默认为：ipv4
-#指定工作模式为ipv4还是ipv6。如果为ipv6，请在文件夹下添加ipv6.txt
-#ipv6.txt在CloudflareST工具包里，下载地址：https://github.com/XIU2/CloudflareSpeedTest/releases
+#指定工作模式为ipv4还是ipv6
 IP_ADDR=ipv4
 ###################################################################################################
 ##Cloudflare配置
@@ -77,7 +76,7 @@ CloudflareST_speed=false
 #测速地址  
 CFST_URL=https://xxxxx.xxxxxxxxx.xxxxx
 #测速线程数量；越多测速越快，性能弱的设备 (如路由器) 请勿太高；(默认 200 最多 1000 )
-CFST_N=500
+CFST_N=200
 #延迟测速次数；单个 IP 延迟测速次数，为 1 时将过滤丢包的IP，TCP协议；(默认 4 次 )
 CFST_T=2
 #下载测速数量；延迟测速并排序后，从最低延迟起下载测速的数量；(默认 10 个)
@@ -597,6 +596,7 @@ fi
     closeset
     local_ch
     cf_ip_speed
+    local_ch
     openset
     cf_ip_ddns
     ali_ip_ddns
