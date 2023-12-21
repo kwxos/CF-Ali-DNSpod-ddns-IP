@@ -235,13 +235,16 @@ else
     echo "$filename 已存在，无需下载"
 fi
 chmod a+x "$filename"
+if [ "$IP_ADDR" = "ipv4" ] ; then
 wget -q $IP_txt
-wget -q $IPv6_txt
 wget -q $IPbest_txt -O - > IPlus.txt
 sed -i '/^#/d' IPlus.txt
 echo >> IPlus.txt
 wget -q $IPbest_txt2 -O - | sed 's/<br>/\n/g' >> IPlus.txt
 sed -i '/^#/d' ip.txt
+else
+wget -q $IPv6_txt
+fi
 fi
 }
 closeset(){
@@ -344,18 +347,16 @@ else
 	CFST_URL_R="";
 fi
 if [ "$IP_ADDR" = "ipv6" ] ; then
-    ./$filename $CFST_URL_R -t $CFST_T -n $CFST_N -dn $CFST_DN -tl $CFST_TL -tll $CFST_TLL -sl $CFST_SL -tp $CF_POST -p $CFST_P -f ipv6.txt
+    ./$filename $CFST_URL_R -t $CFST_T -n $CFST_N -dn $CFST_DN -tl $CFST_TL -tll $CFST_TLL -sl $CFST_SL -tp $CF_POST -p $CFST_P -o $CFST_CSV2 -f ipv6.txt
     else
     ./$filename $CFST_URL_R -t $CFST_T -n $CFST_N -dn $CFST_DN -tl $CFST_TL -tll $CFST_TLL -sl $CFST_SL -tp $CF_POST -p $CFST_P 
 fi
 echo "测速完毕";
+if [ "$IP_ADDR" = "ipv4" ] ; then
 echo "二次对比优选";
 IP1=$(sed -n "$((x + 2)),1p" result.csv | awk -F, '{print $1}');
 echo >> IPlus.txt
 echo -e "$IP1\n" >> IPlus.txt
-if [ "$IP_ADDR" = "ipv6" ] ; then
-./$filename $CFST_URL_R -f ipv6.txt -sl $CFST_SL -tp $CF_POST -o $CFST_CSV2
-else
 ./$filename $CFST_URL_R -f IPlus.txt -sl $CFST_SL -tp $CF_POST -o $CFST_CSV2
 fi
 ipAddr=$(sed -n "$((x + 2)),1p" $CFST_CSV2 | awk -F, '{print $1}');
