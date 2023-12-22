@@ -625,6 +625,7 @@ while true; do
             else
                 echo -e "$(date): 本地IP与公网IP不同，将执行IP更新..." >> ddns_log.txt
                 {
+		    rm -rf informlog
                     local_ch
                     cf_ip_ddns
                     ali_ip_ddns
@@ -645,6 +646,7 @@ while true; do
             else
                 echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> ddns_log.txt
                 {
+		    rm -rf ip.txt ipv6.txt informlog
                     run
                     closeset
                     cf_ip_speed
