@@ -8,7 +8,7 @@
 #### 功能有：
 1. 可以优选Cf的ip更新到CF  阿里云DNS  DNSpod，可选择平台更新
 2. 增加ip源选择，可选择ip为反代IP，仓库推荐
-   `[https://github.com/ymyuuu/Proxy-IP-library](https://github.com/ymyuuu/IPDB)`
+   `https://github.com/ymyuuu/IPDB`
 3. 也可作为本地公网IP更新到域名
 4. 自动下载所需环境软件包，运行文件，IP文件
 5. 增加轮询，可指定轮询时间，若IP不能用则进行新一轮测速
