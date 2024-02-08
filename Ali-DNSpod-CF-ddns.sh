@@ -5,6 +5,10 @@ if [ ! -e "$config_file" ]; then
   cat > config << EOF
 #!/bin/bash
 ##################################静雨·安蝉>>blog.kwxos.top#########################################
+## 4.2 
+## 推送可选IP数量到cloudflare，暂时只支持CF，且不支持IP可用性检测
+## 修复代码运行bug和逻辑
+###################################################################################################
 ##运行模式ipv4 or ipv6 默认为：ipv4
 #指定工作模式为ipv4还是ipv6
 IP_ADDR=ipv4
@@ -13,6 +17,11 @@ IP_ADDR=ipv4
 #选择CF更新是否开启，true为开启CF更新，为false将不会更新
 cf=false
 ##cloudflare配置
+#是否开启小黄云true为开启，false为关闭
+proxy=false
+#更新A记录条数,只能大于等于一条记录，当为多ip推送时（numip值大于1），将不会进行ip可用性检测
+#且需修改sltime参数，使其循环运行，建议sltime=432000，休眠5天
+numip="1"
 #cloudflare账号邮箱
 x_email=xxxxx@qq.com
 #填写需要DDNS的完整域名
@@ -114,6 +123,7 @@ localIP=false
 #如果不开ipget，就指定需要更新到DNS平台的ip，如ipAddr520=1.1.1.1
 ipAddr520=""
 #休眠时间，1200也就是20分钟检测一次IP地址是否可用，当localIP开启时将指定时间检测本地IP是否变化
+#当为多ip推送时（numip值大于1），将不会进行ip可用性检测，且需修改sltime参数，使其循环运行，建议sltime=432000，休眠5天
 sltime=1200
 #是否自动安装系统软件包，true为安装false为不安装，运行需要jq curl openssl wget coreutils-timeout
 #尽量不自动安装，手动安装这些，因为各个系统环境复杂！！！！！
@@ -236,7 +246,7 @@ else
 fi
 chmod a+x "$filename"
 if [ "$IP_ADDR" = "ipv4" ] ; then
-wget -q $IP_txt
+wget -q $IP_txt -O - > ip.txt
 wget -q $IPbest_txt -O - > IPlus.txt
 sed -i '/^#/d' IPlus.txt
 echo >> IPlus.txt
@@ -279,6 +289,11 @@ else
 		sleep 3s;
 fi
 }
+if [ "$numip" > "$CFST_DN" ] ; then
+
+    CFST_DN=$((numip + 3))
+
+fi
 cf_ip_speed(){
 if [ "$CloudflareST_speed" = "false" ] ; then
 	echo "按要求未进行CFIP测速";
@@ -352,6 +367,7 @@ if [ "$IP_ADDR" = "ipv6" ] ; then
     ./$filename $CFST_URL_R -t $CFST_T -n $CFST_N -dn $CFST_DN -tl $CFST_TL -tll $CFST_TLL -sl $CFST_SL -tp $CF_POST -p $CFST_P 
 fi
 echo "测速完毕";
+if [ "$numip" = "1" ] ; then
 if [ "$IP_ADDR" = "ipv4" ] ; then
 echo "二次对比优选";
 IP1=$(sed -n "$((x + 2)),1p" result.csv | awk -F, '{print $1}');
@@ -361,6 +377,7 @@ echo -e "$IP1\n" >> IPlus.txt
 fi
 ipAddr=$(sed -n "$((x + 2)),1p" $CFST_CSV2 | awk -F, '{print $1}');
 fi
+fi
 }
 cf_ip_ddns(){
 if [ "$cf" = "false" ] ; then
@@ -368,12 +385,12 @@ if [ "$cf" = "false" ] ; then
 else
 echo "开始更新CF域名......";
 CDNhostname=$hostname;
+if [ "$numip" = 1 ] ; then
 listDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?type=${record_type}&name=${CDNhostname}";
 createDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records";
 res=$(curl -s -X GET "$listDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json");
 recordId=$(echo "$res" | jq -r ".result[0].id");
 recordIp=$(echo "$res" | jq -r ".result[0].content");
-proxy="false";
 res=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${zone_id}" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json");
 resSuccess=$(echo "$res" | jq -r ".success");
 if [[ $resSuccess != "true" ]]; then
@@ -404,6 +421,76 @@ if [[ $recordIp1 = "$ipAddr" ]]; then
 else
     echo -e "----->CF更新失败<------\n域名：$CDNhostname" >> informlog;
     echo "更新失败,请检查网络，账户以及账户秘钥，配置是否正确！！！"
+fi
+fi
+else
+listDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records?type=${record_type}&name=${CDNhostname}"
+res=$(curl -s -X GET "$listDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json")
+resSuccess=$(echo "$res" | jq -r ".success")
+if [[ $resSuccess != "true" ]]; then
+    pushmessage="登录错误，请检查 Cloudflare 账号信息填写是否正确！"
+    Tg_push_IP
+    exit 1
+fi
+existingRecordsCount=$(echo "$res" | jq -r '.result | length')
+record_ids=$(echo "$res" | jq -r '.result[].id')
+if [[ $existingRecordsCount -eq $numip ]]; then
+    for ((i = 0; i <= $numip; i++)); do
+        numh=2+i
+        ipAddrm=$(sed -n "$((x + $numh)),1p" $CFST_CSV | awk -F, '{print $1}')
+        current_record_id=$(echo "$record_ids" | sed -n "$((i + 1))p")
+        updateDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records/${current_record_id}"
+        res=$(curl -s -X PUT "$updateDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json" --data "{\"type\":\"$record_type\",\"name\":\"$CDNhostname\",\"content\":\"$ipAddrm\",\"proxied\":$proxy}")
+        resSuccess=$(echo "$res" | jq -r ".success")
+        resback=$(echo "$res" | jq -r ".errors[].message")
+    if [[ $resSuccess == "true" ]]; then
+        if [[ $i == 0 ]]; then
+            echo -e "----->CF更新成功<------\n域名：$CDNhostname\nIP：$ipAddrm" >> informlog
+        else
+            echo -e "IP：$ipAddrm" >> informlog
+        fi
+    else
+        if [[ $resback == "Record already exists." ]]; then
+            echo -e "IP：$ipAddrm" >> informlog
+        else
+            if [[ $i == 0 ]]; then
+                echo -e "----->CF更新失败<------\n域名：$CDNhostname" >> informlog
+                echo "操作失败，请检查网络、账户以及账户秘钥，配置是否正确！！！"
+            fi
+        fi
+        
+    fi
+    done
+else
+    for ((i = 0; i < $existingRecordsCount; i++)); do
+    delete_id=$(echo "$record_ids" | sed -n "$((i + 1))p")
+    deleteDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records/${delete_id}"
+     deleteres=$(curl -s -X DELETE "$deleteDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json")
+    done
+    for ((i = 0; i <= $numip; i++)); do
+        numh=2+i
+        ipAddrm=$(sed -n "$((x + $numh)),1p" $CFST_CSV | awk -F, '{print $1}')
+        createDnsApi="https://api.cloudflare.com/client/v4/zones/${zone_id}/dns_records"
+        res=$(curl -s -X POST "$createDnsApi" -H "X-Auth-Email:$x_email" -H "X-Auth-Key:$api_key" -H "Content-Type:application/json" --data "{\"type\":\"$record_type\",\"name\":\"$CDNhostname\",\"content\":\"$ipAddrm\",\"proxied\":$proxy}")
+        resSuccess=$(echo "$res" | jq -r ".success")
+        resback=$(echo "$res" | jq -r ".errors[].message")
+    if [[ $resSuccess == "true" ]]; then
+        if [[ $i == 0 ]]; then
+            echo -e "----->CF更新成功<------\n域名：$CDNhostname\nIP：$ipAddrm" >> informlog
+        else
+            echo -e "IP：$ipAddrm" >> informlog
+        fi
+    else
+        if [[ $resback == "Record already exists." ]]; then
+            echo -e "IP：$ipAddrm" >> informlog
+        else
+            if [[ $i == 0 ]]; then
+            echo -e "----->CF更新失败<------\n域名：$CDNhostname" >> informlog
+            echo "操作失败，请检查网络、账户以及账户秘钥，配置是否正确！！！"
+            fi
+        fi
+    fi
+    done
 fi
 fi
 fi
@@ -584,7 +671,7 @@ else
             exit 1
          else
             echo "TG 推送失败，正在进行第 $retry_count 次重试..."
-            sleep 2
+
          fi
       fi
    done
@@ -592,74 +679,97 @@ fi
 fi
 }
 if [ -z "$ipAddr520" ]; then
-{
-    run
-    closeset
-    cf_ip_speed
-    local_ch
-    openset
-    cf_ip_ddns
-    ali_ip_ddns
-    dnspod_ip_ddns
-    Tg_push_IP
-} >> ddns_log.txt
+    {
+        run
+        closeset
+        cf_ip_speed
+        local_ch
+        openset
+        cf_ip_ddns
+        ali_ip_ddns
+        dnspod_ip_ddns
+        Tg_push_IP
+    } >> ddns_log.txt
 else
-ipAddr=$ipAddr520
-{
-    cf_ip_ddns
-    ali_ip_ddns
-    dnspod_ip_ddns
-    Tg_push_IP
-} >> ddns_log.txt
-exit 0;
+    ipAddr=$ipAddr520
+    {
+        cf_ip_ddns
+        ali_ip_ddns
+        dnspod_ip_ddns
+        Tg_push_IP
+    } >> ddns_log.txt
+    exit 0;
 fi
-while true; do
-    source config
-    if [ "$localIP" = "true" ] ; then
-        ipAddr1=$(curl -s http://ip.3322.net)
-        if [ "$ipAddr" = "$ipAddr1" ] ; then
-            echo -e "$(date): 本地IP与公网IP相同..." >> ddns_log.txt
-        else
-            if [ -z "$ipAddr" ]; then
-                echo -e "$(date): 本地IP为空，请检查网络配置..." >> ddns_log.txt
+if [ "$numip" = "1" ] ; then
+    while true; do
+        source config
+        if [ "$localIP" = "true" ] ; then
+            ipAddr1=$(curl -s http://ip.3322.net)
+            if [ "$ipAddr" = "$ipAddr1" ] ; then
+                echo -e "$(date): 本地IP与公网IP相同..." >> ddns_log.txt
             else
-                echo -e "$(date): 本地IP与公网IP不同，将执行IP更新..." >> ddns_log.txt
-                {
-		    rm -rf informlog
-                    local_ch
-                    cf_ip_ddns
-                    ali_ip_ddns
-                    dnspod_ip_ddns
-                    Tg_push_IP
-                } >> ddns_log.txt
+                if [ -z "$ipAddr" ]; then
+                    echo -e "$(date): 本地IP为空，请检查网络配置..." >> ddns_log.txt
+                else
+                    echo -e "$(date): 本地IP与公网IP不同，将执行IP更新..." >> ddns_log.txt
+                    {
+    		    rm -rf informlog
+                        local_ch
+                        cf_ip_ddns
+                        ali_ip_ddns
+                        dnspod_ip_ddns
+                        Tg_push_IP
+                    } >> ddns_log.txt
+                fi
+            fi
+        else
+            DCF_file="DCF.csv"
+            if [ ! -e "$DCF_file" ]; then
+                echo -e "未检测到 $DCF_file 文件，检查配置是否正确，将退出！！！" >> ddns_log.txt
+                exit 0
+            else
+                IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}')
+                if ping -c 4 -W 2 "$IPnew" &> /dev/null; then
+                    echo -e "$(date): IP $IPnew 可正常使用...." >> ddns_log.txt
+                else
+                    echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> ddns_log.txt
+                    {
+    		            rm -rf ip.txt ipv6.txt informlog
+                        run
+                        closeset
+                        cf_ip_speed
+                        openset
+                        cf_ip_ddns
+                        ali_ip_ddns
+                        dnspod_ip_ddns
+                        Tg_push_IP
+                    } >> ddns_log.txt
+                fi
             fi
         fi
-    else
-        DCF_file="DCF.csv"
-        if [ ! -e "$DCF_file" ]; then
-            echo -e "未检测到 $DCF_file 文件，检查配置是否正确，将退出！！！" >> ddns_log.txt
+        echo -e "休眠：$sltime秒" >> ddns_log.txt
+        sleep "$sltime"
+    done
+else
+    while true; do
+        echo -e "休眠：$sltime秒" >> /opt/ddns_log/$(date +"%Y-%m-%d").txt
+        sleep "$sltime"
+        result_file="result.csv"
+        if [ ! -e "$result_file" ]; then
+            echo -e "未检测到 $result_file 文件，检查配置是否正确，将退出！！！" >> ddns_log.txt
             exit 0
         else
-            IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}')
-            if ping -c 4 -W 2 "$IPnew" &> /dev/null; then
-                echo -e "$(date): IP $IPnew 可正常使用...." >> ddns_log.txt
-            else
-                echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> ddns_log.txt
-                {
-		    rm -rf ip.txt ipv6.txt informlog
-                    run
-                    closeset
-                    cf_ip_speed
-                    openset
-                    cf_ip_ddns
-                    ali_ip_ddns
-                    dnspod_ip_ddns
-                    Tg_push_IP
-                } >> ddns_log.txt
-            fi
+        {
+            rm -rf ip.txt ipv6.txt informlog
+            run
+            closeset
+            cf_ip_speed
+            openset
+            cf_ip_ddns
+            ali_ip_ddns
+            dnspod_ip_ddns
+            Tg_push_IP
+        } >> ddns_log.txt
         fi
-    fi
-    echo -e "休眠：$sltime秒" >> ddns_log.txt
-    sleep "$sltime"
-done
-
+    done
+fi
