@@ -1,15 +1,14 @@
 ## CF-DNSpod-Aliy-ddns
-#### 版本：V4.1
+#### 版本：V4.2
 #### 需要软件包：jq curl openssl wget coreutils-timeout(脚本带有安装代码，若出错，请自行安装)
 #### 首次运行后，请填好配置文件，其中有详细解释，若不明白，搜索，或者问我
 #### docker首次运行产生config文件后，请手动停止，配置好文件后手动重启
 #### 运行日志文件和配置文件在dns-ip/文件夹下的ddns_log.txt和config
 #### 执行前在所需平台添加一条A记录，只支持一个，A记录再多作用不大，所以脚本没支持多个IP
-#### 试考完了，后面更新，多IP推送
 #### 功能有：
 1. 可以优选Cf的ip更新到CF  阿里云DNS  DNSpod，可选择平台更新
 2. 增加ip源选择，可选择ip为反代IP，仓库推荐
-   `https://github.com/ymyuuu/Proxy-IP-library`
+   `[https://github.com/ymyuuu/Proxy-IP-library](https://github.com/ymyuuu/IPDB)`
 3. 也可作为本地公网IP更新到域名
 4. 自动下载所需环境软件包，运行文件，IP文件
 5. 增加轮询，可指定轮询时间，若IP不能用则进行新一轮测速
@@ -18,7 +17,7 @@
 8. 将上次以解析ip，放入本地重新测速比较
 9. 运行日志在ddns_log.txt文件中，运行后可以在其中查看运行成功与否和是否报错
 10. 执行过程都在日志文件中，出错了一般是配置错了，我都有说明，除非error，用docker吧
-
+11. 自选IP数量进行推送到cloudflare（只支持cloudflare）
 #### 手动运行方式(有docker的建议docker运行)：
 ```
 mkdir -p $(pwd)/dns-ip/ && cd $(pwd)/dns-ip/ && wget https://raw.githubusercontent.com/kwxos/CF-Ali-DNSpod-ddns-IP/main/Ali-DNSpod-CF-ddns.sh && chmod a+x Ali-DNSpod-CF-ddns.sh && ./Ali-DNSpod-CF-ddns.sh
