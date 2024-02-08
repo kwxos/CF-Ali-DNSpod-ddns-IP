@@ -729,10 +729,10 @@ if [ "$numip" = "1" ] ; then
                 exit 0
             else
                 IPnew=$(sed -n "$((x + 2)),1p" "$DCF_file" | awk -F, '{print $1}')
-                if ping -c 4 -W 2 "$IPnew" &> /dev/null; then
-                    echo -e "$(date): IP $IPnew 可正常使用...." >> ddns_log.txt
-                else
-                    echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> ddns_log.txt
+	            if nc -zv -w 2 "$IPnew" "$CF_POST" &> /dev/null; then
+	    		echo -e "$(date): IP $IPnew 可正常使用...." >> ddns_log.txt
+		    else
+	    		echo -e "$(date): IP $IPnew 不可用，将执行IP更新..." >> ddns_log.txt
                     {
     		            rm -rf ip.txt ipv6.txt informlog
                         run
