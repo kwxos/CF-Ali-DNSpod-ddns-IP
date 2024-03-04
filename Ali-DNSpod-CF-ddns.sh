@@ -461,6 +461,7 @@ if [[ $existingRecordsCount -eq $numip ]]; then
         
     fi
     done
+    i = 0
 else
     for ((i = 0; i < $existingRecordsCount; i++)); do
     delete_id=$(echo "$record_ids" | sed -n "$((i + 1))p")
@@ -491,6 +492,7 @@ else
         fi
     fi
     done
+    i = 0
 fi
 fi
 fi
