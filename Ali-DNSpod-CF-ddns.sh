@@ -4,8 +4,8 @@ config_file="./config"
 if [ ! -e "$config_file" ]; then
   cat > config << EOF
 #!/bin/bash
-##################################静雨·安蝉>>blog.kwxos.top#########################################
-## 4.2 
+##################################静雨·安蝉>>blog.loadke.tech#########################################
+## 4.3
 ## 推送可选IP数量到cloudflare，暂时只支持CF，且不支持IP可用性检测
 ## 修复代码运行bug和逻辑
 ###################################################################################################
@@ -120,6 +120,8 @@ telegramlink=xxx.xxxxxxxx.xxxxxxx
 #本地IP检测，如有公网IP，需动态解析请打开此开关，与优选IP不能同时使用
 #使用此请关闭ipget和CloudflareST_speed，开启为true，关闭为false
 localIP=false
+##本地ip获取API，默认链接http://ip.3322.net
+locallink="http://ip.3322.net"
 #如果不开ipget，就指定需要更新到DNS平台的ip，如ipAddr520=1.1.1.1
 ipAddr520=""
 #休眠时间，1200也就是20分钟检测一次IP地址是否可用，当localIP开启时将指定时间检测本地IP是否变化
@@ -216,7 +218,11 @@ if [ "$packages" = "true" ] ; then
 fi
 local_ch(){
 if [ "$localIP" = "true" ]; then
-ipAddr=`curl -s http://ip.3322.net`
+if [ -z "$locallink" ]; then
+    locallink="http://ip.3322.net"
+fi
+ipAddr=$(curl -s $locallink)
+fi
 fi
 }
 if [ "$IP_ADDR" = "ipv4" ] ; then
@@ -520,7 +526,7 @@ send_request() {
     curl -s "https://alidns.cn-hangzhou.aliyuncs.com/?$args&Signature=$(urlencode "$hash")"
 }
 get_recordid() {
-    grep -Eo '"RecordId":"[0-9]+"' | cut -d':' -f2 | tr -d '"'
+    grep '"RecordId"' | jq -r '.DomainRecords.Record[].RecordId'
 }
 get_ip() {
     grep '"Value"' | jq -r '.DomainRecords.Record[].Value'
@@ -706,7 +712,7 @@ if [ "$numip" = "1" ] ; then
     while true; do
         source config
         if [ "$localIP" = "true" ] ; then
-            ipAddr1=$(curl -s http://ip.3322.net)
+            ipAddr1=$(curl -s $locallink)
             if [ "$ipAddr" = "$ipAddr1" ] ; then
                 echo -e "$(date): 本地IP与公网IP相同..." >> ddns_log.txt
             else
