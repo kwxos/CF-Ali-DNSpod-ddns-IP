@@ -1,3 +1,10 @@
+# 正在重构
+
+## 可访问[http://bestip.badking.pp.ua/](http://bestip.badking.pp.ua/) 体验
+
+![image](https://github.com/user-attachments/assets/24a57a0e-42a1-4853-8268-3f545658fecc)
+
+# 旧：
 ## CF-DNSpod-Aliy-ddns
 #### 版本：V4.3
 #### 需要软件包：jq curl openssl wget coreutils-timeout(脚本带有安装代码，若出错，请自行安装)
