@@ -1,6 +1,6 @@
 # 正在重构
 
-## 可访问[http://bestip.badking.pp.ua/](http://bestip.badking.pp.ua/) 体验
+## 可访问[CloudFlare 优质 IP 数据](http://bestip.badking.pp.ua/) 体验
 
 ![image](https://github.com/user-attachments/assets/24a57a0e-42a1-4853-8268-3f545658fecc)
 
