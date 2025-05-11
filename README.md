@@ -1,8 +1,7 @@
-## 可访问[CloudFlare BestIP](http://bestip.badking.pp.ua/) 体验
-## 暂不开源，无任何后门，挖矿，等危害计算机行为，可抓包获取外连网址。
 ## 项目介绍
 
 BestIP 是一个高效的 IP 优选工具，通过Golang重构，借助 XIU2/CloudflareSpeedTest 的测速工具实现，支持 Cloudflare、阿里云和腾讯云 DNSPod 的 DNS 记录更新。本工具可以帮助用户找到最优的 IP 地址，并自动更新到您的域名解析记录中。
+可访问[CloudFlare BestIP](http://bestip.badking.pp.ua/) 体验
 
 ```
     _    _     ____            _ 
@@ -110,7 +109,7 @@ BestIP 是一个高效的 IP 优选工具，通过Golang重构，借助 XIU2/Clo
 - 测速时可能会消耗一定的网络流量，请注意您的网络计划
 - 本工具基于 XIU2/CloudflareSpeedTest，需要下载其测速组件才能正常工作
 - 更新频率不建议设置过高，以免触发 API 调用限制
-
+- 暂不开源，无任何后门，挖矿，等危害计算机行为，可抓包获取外连网址。
 ## 版权和许可
 
 BestIP for CF-Ali-DNSpod 由 AbBai（阿布白）开发
