@@ -1,6 +1,9 @@
 ## 项目介绍
 
-BestIP 是一个高效的 IP 优选工具，通过Golang重构，借助 XIU2/CloudflareSpeedTest 的测速工具实现，支持 Cloudflare、阿里云和腾讯云 DNSPod 的 DNS 记录更新。本工具可以帮助用户找到最优的 IP 地址，并自动更新到您的域名解析记录中。
+BestIP 是一个高效的 IP 优选工具，通过Golang重构，借助 XIU2/CloudflareSpeedTest 的测速工具实现，支持 Cloudflare、阿里云和腾讯云 DNSPod 的 DNS 记录更新。
+
+本工具可以帮助用户找到最优的 IP 地址，并自动更新到您的域名解析记录中。
+
 可访问[CloudFlare BestIP](http://bestip.badking.pp.ua/) 体验
 
 ```
