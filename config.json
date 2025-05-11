@@ -1,0 +1,55 @@
+{
+  "IP_Type": "ipv4",
+  "IP_Number": 5,
+  "IPv4_Url": "https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ip.txt",
+  "Best_IPv4": "https://ipdb.api.030101.xyz/?type=bestproxy",
+  "IPv6_Url": "https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ipv6.txt",
+  "Pushinfo": "",
+  "Aliyun":{
+    "aliyun": false,
+    "Domain": "example.com",
+    "SubDomainName": "cf",
+    "TTL": "600",
+    "AliDDNS_AK": "",
+    "AliDDNS_SK": ""
+  },
+  "Cloudflare":{
+    "Cloudflare": false,
+    "Domain": "example.com",
+    "SubDomainName": "cf",
+    "Email": "",
+    "ZoneID": "",
+    "ApiKey": "",
+    "Proxy": false
+  },
+  "Dnspod":{
+    "Dnspod": false,
+    "Domain": "example.com",
+    "SubDomainName": "cf",
+    "RecordLine": "默认",
+    "SecretId": "",
+    "SecretKey": ""
+  },
+  "CloudflareST": {
+    "CloudflareST_speed": true,
+    "CFST_URL": "https://cf.xiu2.xyz/url",
+    "CFST_conf":"-t 2 -n 200 -dn 10 -dt 5 -tp 443 -tl 200 -tll 40 -tlr 0.2 -sl 1"
+  },
+  "CloudflareKV": {
+    "CloudflareKV": false,
+    "KVapiToken": "",
+    "KVaccountID": "",
+    "KVnamespaceID": ""
+  },
+  "TestSetime": {
+    "Test_Loop": false,
+    "Test_domain": "cf.example.com",
+    "Test_latencyThreshold": "250",
+    "Test_packetLossThreshold": "20",
+    "Test_checkInterval": "10",
+    "Test_checknum": "5",
+    "Test_maxchecknum": "10",
+    "Test_maxTestInterval": "24"
+  },
+  "debug": false
+} 
