@@ -60,7 +60,7 @@
         <button onclick="showTab('ipv6')" class="tab-btn" id="ipv6-tab">IPv6</button>
       </div>
       <div class="time-badge" id="update-time-display">
-        更新时间: <span id="update-time">${ipv4time || '未知'}</span>
+        更新时间: <span id="update-time"><!-- UPDATE_TIME --></span>
       </div>
     </div>
 
@@ -68,99 +68,21 @@
     <div class="card mb-6">
       <!-- IPv4 表格 -->
       <div id="ipv4-content" class="tab-content">
-        ${ipv4TableRows ? `
-          <div class="overflow-x-auto">
-            <table>
-              <thead>
-                <tr>
-                  <th>IP 地址</th>
-                  <th>已发送</th>
-                  <th>已接收</th>
-                  <th>丢包率</th>
-                  <th>平均延迟</th>
-                  <th>下载速度</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${ipv4Data.split('&').map(row => {
-                  const cols = row.split(',');
-                  if (cols.length === 6) {
-                    return `
-                      <tr>
-                        <td class="font-mono">${cols[0]}</td>
-                        <td>${cols[1]}</td>
-                        <td>${cols[2]}</td>
-                        <td>
-                          <span class="badge ${parseFloat(cols[3]) > 5 ? 'badge-error' : 'badge-success'}">${cols[3]}%</span>
-                        </td>
-                        <td>${cols[4]} <span class="text-gray-400">ms</span></td>
-                        <td>
-                          <span class="${parseFloat(cols[5]) > 10 ? 'text-green-600' : parseFloat(cols[5]) > 5 ? 'text-blue-600' : 'text-gray-600'} font-medium">${cols[5]}</span>
-                          <span class="text-gray-400">MB/s</span>
-                        </td>
-                      </tr>
-                    `;
-                  }
-                  return '';
-                }).join('')}
-              </tbody>
-            </table>
-          </div>
-        ` : '<div class="py-16 text-center text-gray-500"><svg class="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><p>暂无 IPv4 数据</p></div>'}
+        <!-- IPV4_CONTENT -->
       </div>
 
       <!-- IPv6 表格 -->
       <div id="ipv6-content" class="tab-content hidden">
-        ${ipv6TableRows ? `
-          <div class="overflow-x-auto">
-            <table>
-              <thead>
-                <tr>
-                  <th>IP 地址</th>
-                  <th>已发送</th>
-                  <th>已接收</th>
-                  <th>丢包率</th>
-                  <th>平均延迟</th>
-                  <th>下载速度</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${ipv6Data.split('&').map(row => {
-                  const cols = row.split(',');
-                  if (cols.length === 6) {
-                    return `
-                      <tr>
-                        <td class="font-mono">${cols[0]}</td>
-                        <td>${cols[1]}</td>
-                        <td>${cols[2]}</td>
-                        <td>
-                          <span class="badge ${parseFloat(cols[3]) > 5 ? 'badge-error' : 'badge-success'}">${cols[3]}%</span>
-                        </td>
-                        <td>${cols[4]} <span class="text-gray-400">ms</span></td>
-                        <td>
-                          <span class="${parseFloat(cols[5]) > 10 ? 'text-green-600' : parseFloat(cols[5]) > 5 ? 'text-blue-600' : 'text-gray-600'} font-medium">${cols[5]}</span>
-                          <span class="text-gray-400">MB/s</span>
-                        </td>
-                      </tr>
-                    `;
-                  }
-                  return '';
-                }).join('')}
-              </tbody>
-            </table>
-          </div>
-        ` : '<div class="py-16 text-center text-gray-500"><svg class="w-12 h-12 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><p>暂无 IPv6 数据</p></div>'}
+        <!-- IPV6_CONTENT -->
       </div>
     </div>
     
     <!-- 页脚 -->
     <div class="footer">
-      <p>© ${new Date().getFullYear()} CloudFlare 优选IP · <a href="https://blog.loadke.tech" >Mr.阿布白</a>
-      </p>
+      <p>© ${new Date().getFullYear()} CloudFlare 优选IP · <a href="https://blog.loadke.tech" >Mr.阿布白</a></p>
     </div>
   </div>
 
   <script src="https://jsdelivr.badking.pp.ua/gh/IonRh/Cloudflare-BestIP@main/static/script.js"></script>
 </body>
 </html>
-    
