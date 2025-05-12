@@ -1,9 +1,9 @@
 {
   "IP_Type": "ipv4",
   "IP_Number": 5,
-  "IPv4_Url": "https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ip.txt",
-  "Best_IPv4": "https://ipdb.api.030101.xyz/?type=bestproxy",
-  "IPv6_Url": "https://raw.gitmirror.com/XIU2/CloudflareSpeedTest/master/ipv6.txt",
+  "IPv4_Url": "https://raw.gitmirror.com/IonRh/Cloudflare-BestIP/main/IPfile/ip.txt",
+  "Best_IPv4": "",
+  "IPv6_Url": "https://raw.gitmirror.com/IonRh/Cloudflare-BestIP/main/IPfile/ipv6.txt",
   "Pushinfo": "",
   "Aliyun":{
     "aliyun": false,
