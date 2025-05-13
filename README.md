@@ -40,10 +40,14 @@ Cloudflare BestIP 是一个高效的 IP 优选工具，通过Golang重构，借�
 - `IPv6_Url`: IPv6 地址文件下载链接
 - `Pushinfo`: 消息推送 URL，支持 Telegram 等推送服务，为空则不推送
   > Pushinfo填写格式：`https://api.telegram.org/bot45xxxxxx:AAHxxxxxxxxxxxxxxxxx/sendMessage?chat_id=60xxxxxxxx&text=`
-不只是telegram，其他能够在连接后面添加信息的，都可推送
+
+  > 不只是telegram，其他能够在连接后面添加信息的，都可推送
+
 推送示例:
+```
 当前优选：ipv4 将更新
 延迟超过阈值: 域名 xxxxx.xxx.xxx 平均延迟 265.48ms 超过阈值 250.00ms
+```
 
 ### 阿里云配置 (Aliyun)
 
@@ -89,10 +93,14 @@ Cloudflare BestIP 是一个高效的 IP 优选工具，通过Golang重构，借�
 - `CloudflareKV.KVaccountID`: Cloudflare 账户 ID
 - `CloudflareKV.KVnamespaceID`: KV 命名空间 ID
   > 如果不需要web展示，可不开启此配置 
-API Token获取地址：https://dash.cloudflare.com/profile/api-tokens，需设置api使用区域为**KV编辑**
-KV 命名空间 ID需在存储和数据库中创建KV，创建后即可看到ID
-然后创建Cloudflare worker，复制本仓库中的worker.js代码，粘贴进worker中
-然后点击worker的设置，绑定KV 命名空间，名称：`KV_NAMESPACE`,值为你所创建的kv库的名
+
+  > API Token获取地址：https://dash.cloudflare.com/profile/api-tokens，需设置api使用区域为**KV编辑**
+
+  > KV 命名空间 ID需在存储和数据库中创建KV，创建后即可看到ID
+
+  > 然后创建Cloudflare worker，复制本仓库中的worker.js代码，粘贴进worker中
+
+  > 然后点击worker的设置，绑定KV 命名空间，名称：`KV_NAMESPACE`,值为你所创建的kv库的名
 
 ### 测试监控配置
 
