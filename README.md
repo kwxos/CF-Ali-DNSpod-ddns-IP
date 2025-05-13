@@ -124,7 +124,7 @@ Cloudflare BestIP 是一个高效的 IP 优选工具，通过Golang重构，借�
 1. 执行：
 
 ```
-curl -sL https://ghproxy.badking.pp.ua/https://raw.githubusercontent.com/IonRh/Cloudflare-BestIP/main/Best.sh | bash
+curl -sL https://ghproxy.badking.pp.ua/https://raw.githubusercontent.com/IonRh/Cloudflare-BestIP/main/BestIP.sh | bash
 
 ```
 
