@@ -125,7 +125,6 @@ Cloudflare BestIP 是一个高效的 IP 优选工具，通过Golang重构，借�
 
 ```
 curl -sL https://ghproxy.badking.pp.ua/https://raw.githubusercontent.com/IonRh/Cloudflare-BestIP/main/BestIP.sh | bash
-
 ```
 
 2. 根据自己的需求修改 `config.json` 配置文件
